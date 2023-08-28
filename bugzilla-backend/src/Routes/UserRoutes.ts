@@ -4,7 +4,8 @@ import {
   getItem,
   deleteItem,
   putItem,
-  userlogin
+  userlogin,
+  getDevelopers // Import the new function for fetching developers
 } from "../Controllers/UserController";
 import { getManager } from "../Middleware/Auth";
 
@@ -14,11 +15,12 @@ router.post("/userlogin", userlogin)
 
 router.post("/postItem", postItem);
 
-router.get("/gettItem",getManager, getItem);
+router.get("/getItem", getManager, getItem); // Fix the route name to match the controller function
 
-router.delete("/deleteItem",getManager, deleteItem);
+router.delete("/deleteItem", getManager, deleteItem);
 
 router.put("/putItem", putItem);
 
-module.exports = router;
+router.get("/getDevelopers", getDevelopers); // Add the new route for fetching developers
 
+module.exports = router;

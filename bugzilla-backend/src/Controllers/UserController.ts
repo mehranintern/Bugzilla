@@ -3,11 +3,19 @@ import { Project } from "../Models/ProjectModel";
 import {JWT_SECRET} from "../Constants/jwt";
 import { getUser } from "../Services/UserService";
 
-
 const User = require("../Models/UserModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+export const getDevelopers = async (req: Request, res: Response) => {
+  try {
+    const developers = await User.find({ user_type: "developer" });
+    res.status(200).json({ developers });
+  } catch (error) {
+    console.error("Error in /api/getDevelopers:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 export const userlogin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -54,7 +62,9 @@ export const postItem = async (req: Request, res: Response) => {
       User: User.id,
     };
     const authToken = jwt.sign(token, JWT_SECRET);
-    res.status(201).json({ message: "User created successfully", authToken });
+    const authObj = { authToken, user_type: user.user_type };
+
+    res.status(201).json({ message: "User created successfully", authObj });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

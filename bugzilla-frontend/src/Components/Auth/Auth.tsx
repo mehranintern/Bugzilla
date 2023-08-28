@@ -21,7 +21,7 @@ function Login() {
     setIsSignUp(false);
   };
 
-  const handleRoleChange = (event: any) => {
+  const handleRoleChange = (event : any) => {
     setSelectedRole(event.target.value);
   };
 
@@ -36,20 +36,17 @@ function Login() {
           navigate("/Manager");
           break;
         case "developer":
-          
           navigate("/Developer");
-         
           break;
         case "qa":
           navigate("/QA");
           break;
+        default:
+          setError("Invalid user type");
+          break;
       }
-    } catch (error: any) {
-      if (error.response && error.response.data) {
-        setError(error.response.data.message);
-      } else {
-        setError("An error occurred while logging in.");
-      }
+    } catch (error) {
+      setError("An error occurred while logging in.");
     }
   };
 
@@ -61,7 +58,20 @@ function Login() {
         password,
         user_type: selectedRole,
       });
-
+      switch (response.data.authObj.user_type) {
+        case "manager":
+          navigate("/Manager");
+          break;
+        case "developer":
+          navigate("/Developer");
+          break;
+        case "qa":
+          navigate("/QA");
+          break;
+        default:
+          setError("Invalid user type");
+          break;
+      }
       if (response.status === 201) {
         setName("");
         setEmail("");
@@ -69,16 +79,12 @@ function Login() {
         setSelectedRole("manager");
         setError("");
       }
-    } catch (error: any) {
-      if (error.response && error.response.data) {
-        setError(error.response.data.message);
-      } else {
-        setError("An error occurred while registering.");
-      }
+    } catch (error) {
+      setError("An error occurred while registering.");
     }
   };
-
   return (
+    <div className="main-div">
     <div className={`container ${isSignUp ? "" : "right-panel-active"}`}>
       <div className="form-container sign-up-container">
         <form action="#">
@@ -163,6 +169,7 @@ function Login() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

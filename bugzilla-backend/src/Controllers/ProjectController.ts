@@ -4,12 +4,13 @@ const Project = require("../Models/ProjectModel");
 // Controller function for POST /projects
 export const postItem = async (req: Request, res: Response) => {
   try {
-    const { name, users, bugs } = req.body;
+    const { name, users, bugs, description } = req.body;
 
     const project = await Project.create({
       name: name,
       users: users,
       bugs: bugs,
+      description: description,
     });
 
     res.status(201).json({ message: 'Project created successfully', project });
@@ -20,7 +21,7 @@ export const postItem = async (req: Request, res: Response) => {
 };
 
 
-// Controller function for GET /projects
+// Controller function for GET /Projects
 export const getItem = async (req: Request, res: Response) => {
   try {
     const projects = await Project.find();
@@ -37,7 +38,7 @@ export const getItem = async (req: Request, res: Response) => {
 export const putItem = async (req: Request, res: Response) => {
   try {
     const { projectId } = req.params;
-    const { name, users, bugs } = req.body;
+    const { name, users, bugs, description } = req.body;
 
     const project = await Project.findByIdAndUpdate(
       projectId,
@@ -45,6 +46,7 @@ export const putItem = async (req: Request, res: Response) => {
         name: name,
         users: users,
         bugs: bugs,
+        description: description
       },
       { new: true }
     );
