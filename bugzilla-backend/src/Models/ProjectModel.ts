@@ -6,6 +6,7 @@ const projectSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   users: [
     {
@@ -19,6 +20,11 @@ const projectSchema = new mongoose.Schema({
       ref: 'Bug',
     },
   ],
+  description:
+  {
+    type: String,
+    required: true,
+  }
 });
 
 const Project = mongoose.model('Project', projectSchema);
